@@ -1,7 +1,6 @@
 package com.in28minutes.springboot.myfirstwebapp;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /*@RestController tell spring that this is a new Spring bean*//*
@@ -42,18 +41,5 @@ public class SayHelloController {
         sb.append("</body>");
         sb.append("</html>");
         return sb;
-    };
-
-    //    http://localhost:8080/welcome.jsp
-    @RequestMapping("sayHelloThymeleaf")
-    public String sayHelloThymeleaf() {
-        return "sayHello2";
-    };
-
-    @GetMapping("/sayHello")
-    public String sayHello(Model model) {
-        model.addAttribute("msg", "Hello from JSP!");
-        return "sayHello";
-    };
-
+    }
 }
