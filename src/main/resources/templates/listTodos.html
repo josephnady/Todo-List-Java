@@ -6,7 +6,7 @@
     <title>Todo</title>
 </head>
 <body>
-<div th:insert="fragments :: navbar"></div>
+<div th:replace="~{fragments :: navbar}"></div>
 <div class="container">
     <div>Welcome</div>
     <p th:text="${username}"></p>
@@ -15,25 +15,25 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
+            <th hidden="hidden">Id</th>
             <th>username</th>
             <th>Description</th>
             <th>DueDate</th>
             <th>Status</th>
-            <th>Action</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody th:each="todo : ${todos}">
         <tr>
-            <td th:text="${todo.id}"></td>
+            <td th:text="${todo.id}" hidden="hidden"></td>
             <td th:text="${todo.username}"></td>
             <td th:text="${todo.description}"></td>
             <td th:text="${todo.dueDate}"></td>
             <td th:text="${todo.done}"></td>
-            <td>
-                <a class="btn btn-danger" th:href="@{delete-todo(id=${todo.id})}">Delete</a>
-                <a class="btn btn-success" th:href="@{edit-todo(id=${todo.id})}">Edit</a>
-            </td>
+            <td><a class="btn btn-danger" th:href="@{delete-todo(id=${todo.id})}">Delete</a></td>
+            <td><a class="btn btn-success" th:href="@{edit-todo(id=${todo.id})}">Edit</a></td>
+
         </tbody>
     </table>
     <a class=" btn btn-success" href="new-todo">New Todo</a>
