@@ -9,9 +9,9 @@
 <body>
 <div th:insert="fragments :: navbar"></div>
 <div class="container">
-    <h1>Edit Todo</h1>
+    <h1>Add New Todo</h1>
     <hr>
-    <form class="form-check" th:action="@{edit-todo}" th:object="${todo}" method="post">
+    <form th:action="@{new-todo}" th:object="${todo}" method="post">
         <input type="text" id="id" th:field="*{id}" hidden="hidden"/>
 
         <fieldset>

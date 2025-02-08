@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <title>Todo</title>
+</head>
+<body>
+    <div th:insert="fragments :: navbar"></div>
+<div class="container">
+    <div>Welcome</div>
+    <p th:text="${username}"></p>
+    <hr>
+    <h1>Your Todos </h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>username</th>
+            <th>Description</th>
+            <th>DueDate</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody th:each="todo : ${todos}">
+        <tr>
+            <td th:text="${todo.id}"></td>
+            <td th:text="${todo.username}"></td>
+            <td th:text="${todo.description}"></td>
+            <td th:text="${todo.dueDate}"></td>
+            <td th:text="${todo.done}"></td>
+            <td>
+                <a class="btn btn-danger" th:href="@{delete-todo(id=${todo.id})}">Delete</a>
+                <a class="btn btn-success" th:href="@{edit-todo(id=${todo.id})}">Edit</a>
+            </td>
+        </tbody>
+    </table>
+    <a class=" btn btn-success" href="new-todo">New Todo</a>
+</div>
+<script src="/webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+</body>
+</html>
