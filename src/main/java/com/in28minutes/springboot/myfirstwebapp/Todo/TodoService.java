@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class TodoService {
-    private static final List<Todo> todos=  new ArrayList<>();
+    private static final List<Todo> todos = new ArrayList<>();
 
     static {
         todos.add(Todo.builder()
@@ -32,8 +31,8 @@ public class TodoService {
 
 
     public List<Todo> findUserTodoList(String username) {
-        /*return Collections.unmodifiableList(todos);*/
-        return todos;
+        Predicate<? super Todo> predicate = todo -> todo.getUsername().equalsIgnoreCase(username) ;
+        return todos.stream().filter(predicate).toList();
     }
 
 
@@ -50,7 +49,7 @@ public class TodoService {
 
     public void deleteTodoById(UUID id) {
         Predicate<? super Todo> predicate =
-                todo -> todo.getId().equals(id) ;
+                todo -> todo.getId().equals(id);
         todos.removeIf(predicate);
     }
 
