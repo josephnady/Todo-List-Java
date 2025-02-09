@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +14,6 @@ import java.util.UUID;
 import static com.in28minutes.springboot.myfirstwebapp.security.SpringSecurityConfiguration.getLoggedInUsername;
 
 @Controller
-@SessionAttributes("username")
 public class TodoController {
     public TodoService todoService;
     public SpringSecurityConfiguration springSecurityConfiguration;
@@ -29,13 +25,11 @@ public class TodoController {
         this.springSecurityConfiguration = springSecurityConfiguration;
     }
 
-
-
     @GetMapping("list-todos")
     public String listAllTodos(Model model) {
-        List<Todo> todos = todoService.findUserTodoList(getLoggedInUsername());
-        model.addAttribute("todos", todos);
-        return "listTodos";
+            List<Todo> todos = todoService.findUserTodoList(getLoggedInUsername());
+            model.addAttribute("todos", todos);
+            return "listTodos";
     }
 
     @GetMapping(value = "new-todo")
