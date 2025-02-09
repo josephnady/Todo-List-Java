@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Fragments</title>
@@ -7,8 +7,8 @@
 <body>
 <!-- Header Fragment -->
 <header th:fragment="navbar">
-  <nav class="navbar navbar-expand-md navbar-light bg-info mb-3 p-1">
-    <a class="navbar-brand m-1" href="http://www.google.com">ToDo</a>
+  <nav class="navbar navbar-expand-md navbar-light bg-light mb-3 p-1">
+    <a class="navbar-brand m-1" href="https://www.google.com">ToDo</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
@@ -22,7 +22,7 @@
 </header>
 
 <!-- Footer Fragment -->
-<footer th:fragment="footer">
+<footer th:fragment="footer" class="fixed-bottom blockquote blockquote-footer  bg-light">
   <p>&copy; 2025 Joseph Nady Todo App. All rights reserved.</p>
 </footer>
 </body>

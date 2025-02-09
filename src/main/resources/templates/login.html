@@ -8,11 +8,12 @@
 <body>
 <div th:insert="fragments :: navbar"></div>
 <div class="container">
-    <h1>Welcome to Login Page</h1>
+    <h1>Login</h1>
     <pre style="color:red;" th:text="${errorMessage}"></pre>
     <form method="post">
-        <label>Name: <input type="text" name="username"/></label>
-        <label>Password: <input type="password" name="password"/></label>
+        <label class="form-label">Name: <input type="text" name="username" required/></label>
+        <br>
+        <label class="form-label">Password: <input type="password" name="password" required/></label>
         <div>
             <p style="color: blue">Password pattern requirements:</p>
             <ul>
@@ -22,7 +23,7 @@
                 <li> At least one digit
             </ul>
         </div>
-        <input type="submit">
+        <input class="btn btn-success" type="submit">
     </form>
 </div>
 <div th:replace="fragments :: footer"></div>
