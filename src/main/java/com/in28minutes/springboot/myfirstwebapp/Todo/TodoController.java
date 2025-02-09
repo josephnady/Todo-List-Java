@@ -1,28 +1,39 @@
 package com.in28minutes.springboot.myfirstwebapp.Todo;
 
+import com.in28minutes.springboot.myfirstwebapp.security.SpringSecurityConfiguration;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.List;
 import java.util.UUID;
+
+import static com.in28minutes.springboot.myfirstwebapp.security.SpringSecurityConfiguration.getLoggedInUsername;
 
 @Controller
 @SessionAttributes("username")
 public class TodoController {
     public TodoService todoService;
+    public SpringSecurityConfiguration springSecurityConfiguration;
 
     @Autowired
-    public TodoController(TodoService todoService) {
+    public TodoController(TodoService todoService,
+                          SpringSecurityConfiguration springSecurityConfiguration) {
         this.todoService = todoService;
+        this.springSecurityConfiguration = springSecurityConfiguration;
     }
+
+
 
     @GetMapping("list-todos")
     public String listAllTodos(Model model) {
-        List<Todo> todos = todoService.findUserTodoList("josephnady@yahoo.com");
+        List<Todo> todos = todoService.findUserTodoList(getLoggedInUsername());
         model.addAttribute("todos", todos);
         return "listTodos";
     }
@@ -34,18 +45,12 @@ public class TodoController {
         return "newTodo";
     }
 
-
     @PostMapping(value = "new-todo")
     public String addNewTodo(Model model, @Valid Todo todo, BindingResult results) {
         if (results.hasErrors()) {
             return "newTodo";
         }
-        todo = Todo.builder()
-                .username((String) model.getAttribute("username"))
-                .description(todo.getDescription())
-                .dueDate(todo.getDueDate())
-                .done(todo.isDone())
-                .build();
+        todo = Todo.builder().username(getLoggedInUsername()).description(todo.getDescription()).dueDate(todo.getDueDate()).done(todo.isDone()).build();
         model.addAttribute("todo", todo);
         todoService.addNewTodo(todo);
 //       return this.listAllTodos(model);
@@ -67,14 +72,11 @@ public class TodoController {
     }
 
     @PostMapping("edit-todo")
-    public String editTodoById(@RequestParam("id") UUID id,
-                               Model model,
-                               @Valid Todo todo,
-                               BindingResult results) {
+    public String editTodoById(@RequestParam("id") UUID id, @Valid Todo todo, BindingResult results) {
         if (results.hasErrors()) {
             return "editTodo";
         }
-        todo.setUsername((String) model.getAttribute("username"));
+        todo.setUsername(getLoggedInUsername());
         todo.setId(id);
         todoService.editTodoById(todo);
         return "redirect:list-todos";
