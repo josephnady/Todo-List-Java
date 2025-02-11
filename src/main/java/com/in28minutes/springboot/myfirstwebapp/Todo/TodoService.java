@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-@Service
+//@Service
 public class TodoService {
     private static final List<Todo> todos = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class TodoService {
 
     public void addNewTodo(Todo todo) {
         Todo todoNew = Todo.builder()
-                .id(UUID.randomUUID())
+                .id(todo.getId())
                 .username(todo.getUsername())
                 .description(todo.getDescription())
                 .dueDate(todo.getDueDate())

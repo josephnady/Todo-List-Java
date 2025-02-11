@@ -22,6 +22,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SpringSecurityConfiguration {
     Function<String, String> passwordEncoder = input -> passwordEncoder().encode(input);
 
+    @NotNull
+    public static String getLoggedInUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -31,7 +37,7 @@ public class SpringSecurityConfiguration {
     public InMemoryUserDetailsManager createUserDetailsManager() {
         UserDetails user1Details = createNewUserDetails("user1", "123456");
         UserDetails user2Details = createNewUserDetails("user2", "456789");
-        return new InMemoryUserDetailsManager(user1Details,user2Details);
+        return new InMemoryUserDetailsManager(user1Details, user2Details);
     }
 
     @NotNull
@@ -43,27 +49,23 @@ public class SpringSecurityConfiguration {
                 .roles("USER", "ADMIN").build();
     }
 
-    @NotNull
-    public static String getLoggedInUsername() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
-    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.formLogin(withDefaults());
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                         // Allow access to H2 console
+                        .requestMatchers("/h2-console/**").permitAll()
+                        // Allow access to H2 console
                         .anyRequest().authenticated()
                 )
+                .formLogin(withDefaults())
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**") // Disable CSRF for H2 console
                 )
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)); // Allow frames for H2 console
-                        //you can use also ' .frameOptions( frameOption -> frameOption.disable()); '
+        //you can use also ' .frameOptions( frameOption -> frameOption.disable()); '
         return http.build();
 
     }
+
 }
